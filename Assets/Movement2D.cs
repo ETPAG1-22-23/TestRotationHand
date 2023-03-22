@@ -17,6 +17,8 @@ public class Movement2D : MonoBehaviour
     public GameObject pivotGun;
     public GameObject spawnPoint;
     public Object bulletRef;
+    public SpriteRenderer bras;
+    
 
     SpriteRenderer sr;
 
@@ -39,9 +41,19 @@ public class Movement2D : MonoBehaviour
         Vector3 v_diff = (target - transform.position).normalized;
         float atan2 = Mathf.Atan2(v_diff.y, v_diff.x);
         pivotGun.transform.rotation = Quaternion.Euler(0f, 0f, atan2 * Mathf.Rad2Deg);
+        Debug.Log(pivotGun.transform.rotation.eulerAngles.z);
+        if (pivotGun.transform.rotation.eulerAngles.z > 90 && pivotGun.transform.rotation.eulerAngles.z < 270)
+        {
+            bras.flipY=true;
+        }
+        else
+        {
+            bras.flipY = false;
+         
+        }
 
-        Debug.Log(v_diff.x);
-
+       //Debug.Log(v_diff.x);
+        
         sr.flipX = (v_diff.x < 0);
         if (Input.GetButtonDown("Fire1"))
         {
@@ -61,4 +73,5 @@ public class Movement2D : MonoBehaviour
         }
         jumping = false;
     }
+   
 }
