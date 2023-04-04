@@ -18,6 +18,9 @@ public class Movement2D : MonoBehaviour
     public GameObject spawnPoint;
     public Object bulletRef;
     public SpriteRenderer bras;
+    public int JumpCount;
+
+    
     
 
     SpriteRenderer sr;
@@ -32,32 +35,44 @@ public class Movement2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(rb.velocity.y == 0)
+
+       {
+
+            JumpCount = 0;
+            
+       
+        }
         horizontalValue = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && jumping==false && JumpCount<2)
         {
             jumping = true;
+
         }
         Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 v_diff = (target - transform.position).normalized;
         float atan2 = Mathf.Atan2(v_diff.y, v_diff.x);
         pivotGun.transform.rotation = Quaternion.Euler(0f, 0f, atan2 * Mathf.Rad2Deg);
-        Debug.Log(pivotGun.transform.rotation.eulerAngles.z);
+        
         if (pivotGun.transform.rotation.eulerAngles.z > 90 && pivotGun.transform.rotation.eulerAngles.z < 270)
         {
             bras.flipY=true;
+            
+            spawnPoint.GetComponent<Transform>().localPosition = new Vector2(1.9f, -0.35f);
         }
         else
         {
             bras.flipY = false;
-         
+            
+            spawnPoint.GetComponent<Transform>().localPosition = new Vector2(1.9f, 0.3f);
         }
-
+        
        //Debug.Log(v_diff.x);
         
         sr.flipX = (v_diff.x < 0);
         if (Input.GetButtonDown("Fire1"))
         {
-            Debug.Log("Fire !");
+            
             Instantiate(bulletRef,spawnPoint.transform.position, pivotGun.transform.rotation);
         }
 
@@ -70,8 +85,13 @@ public class Movement2D : MonoBehaviour
         if (jumping)
         {
             rb.AddForce(new Vector2(0f, m_JumpForce));
+            JumpCount ++;                    
+            jumping = false;
         }
-        jumping = false;
+
+    }
+    
+       
     }
    
-}
+

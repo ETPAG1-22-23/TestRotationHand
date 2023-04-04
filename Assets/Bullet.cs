@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = (direction * speed * Time.fixedDeltaTime);
-        Debug.Log("direction = "+direction+" Speed = "+speed);
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
